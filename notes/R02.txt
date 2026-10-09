@@ -1,0 +1,291 @@
+================================================================================
+  GUIA DE ESTUDO - EXAM RANK 02 (42)
+  Repositorio: patibum-exam
+================================================================================
+
+O segredo do Rank 02 nao e decorar dezenas de funcoes. E reconhecer os
+padroes dos exercicios, entender a logica e conseguir reconstruir a solucao
+do zero, sem consultar nada.
+
+AVISO: os grupos abaixo sao uma organizacao didatica. A ordem, os niveis e os
+exercicios que caem dependem da versao do exame / simulador (ex.: examshell).
+Sempre siga o enunciado (subject) do exercicio.
+
+
+--------------------------------------------------------------------------------
+  INDICE
+--------------------------------------------------------------------------------
+  1. Resumo das questoes por tipo
+  2. Os 6 padroes que se repetem
+  3. As 3 perguntas antes de codar
+  4. Estrategia durante a prova
+  5. Como treinar com o simulador
+  6. Plano de estudo de 7 dias
+  7. Esqueletos de referencia
+  8. Checklist tecnico
+  9. Erros classicos
+
+
+--------------------------------------------------------------------------------
+  1. RESUMO DAS QUESTOES POR TIPO
+--------------------------------------------------------------------------------
+
+NIVEL 1 - Caracteres e strings
+  Exemplos: first_word, rev_print, rot_13, rotone
+  - first_word : ignora espacos iniciais e imprime a primeira palavra.
+  - rev_print  : percorre a string de tras para frente.
+  - rot_13     : desloca cada letra 13 posicoes no alfabeto.
+  - rotone     : avanca cada letra uma posicao (z -> a, Z -> A).
+  Testam: while, indices, condicoes, ASCII e write.
+  Como estudar: treine percorrer uma string, identificar caracteres e
+  decidir quando parar.
+
+NIVEL 2 - Numeros e bits
+  Exemplos: ft_atoi, swap_bits, is_power_of_2
+  - ft_atoi        : converte os digitos de uma string em inteiro.
+  - swap_bits      : troca os dois grupos de 4 bits (nibbles) de um byte.
+  - is_power_of_2  : verifica se um numero e potencia de 2.
+  Em comum: transformar dados usando regras matematicas.
+  Como estudar: sinais, digitos, multiplicar/dividir por 10, mascaras de
+  bits e operadores &  |  <<  >>.
+
+NIVEL 3 - Busca e comparacao
+  Exemplos: inter, union
+  - inter : imprime os caracteres presentes nas DUAS strings, sem duplicar,
+            na ordem da primeira string.
+  - union : imprime os caracteres de qualquer das strings, sem repetir,
+            na ordem da primeira ocorrencia.
+  Em comum: verificar se um caractere ja apareceu ou existe em outra string.
+  Como estudar: loops aninhados e arrays de controle (seen[256]).
+  Primeiro entenda a logica; depois otimize.
+
+NIVEL 4 - Memoria dinamica e estado
+  Exemplos: ft_split, get_next_line, ft_printf
+  - ft_split       : separa uma string em palavras alocadas dinamicamente.
+  - get_next_line  : le uma linha por chamada, preservando o restante.
+  - ft_printf      : interpreta especificadores e argumentos variadicos.
+  Em comum: planejamento, controle de estado e atencao a memoria.
+  Como estudar: malloc, free, ponteiros e strings primeiro; depois estado
+  persistente (static) e va_list.
+
+NIVEL 5 - Listas ligadas
+  Exemplo: sort_list
+  - sort_list : ordena os elementos da lista segundo a funcao de comparacao.
+  Testa: structs, ponteiros, encadeamento e algoritmos de ordenacao.
+  Como estudar: desenhe os nos e as ligacoes no papel antes de codar.
+  Em algumas solucoes e mais simples trocar o conteudo (data) dos nos; em
+  outras e preciso reorganizar os proprios nos.
+
+
+--------------------------------------------------------------------------------
+  2. OS 6 PADROES QUE SE REPETEM
+--------------------------------------------------------------------------------
+
+  PADRAO                  ONDE APARECE                 O QUE SABER
+  ----------------------  ---------------------------  -------------------------
+  Percorrer dados         first_word, rev_print,       Indices, while, condicao
+                          rot_13                       de parada
+  Transformar valores     rotone, ft_atoi, swap_bits   ASCII, aritmetica,
+                                                       operadores
+  Procurar ocorrencias    inter, union                 Comparacao, controle de
+                                                       duplicatas
+  Dividir e montar dados  ft_split, ft_printf          Parsing, organizacao,
+                                                       funcoes auxiliares
+  Preservar informacao    get_next_line, listas        Estado, ponteiros,
+                                                       estrutura dos dados
+  Gerenciar memoria       ft_split, GNL, qualquer      Alocacao, liberacao,
+                          funcao com malloc            tratamento de falhas
+
+
+--------------------------------------------------------------------------------
+  3. AS 3 PERGUNTAS ANTES DE CODAR
+--------------------------------------------------------------------------------
+
+  1) ONDE ESTOU?     -> indice, ponteiro ou no atual.
+  2) QUANDO PARO?    -> '\0', fim da linha, fim da lista ou condicao do
+                        problema.
+  3) O QUE FACO COM O DADO? -> imprimir, converter, comparar, armazenar
+                        ou liberar.
+
+Se voce responder essas tres perguntas antes de escrever codigo, muitos
+exercicios deixam de parecer totalmente diferentes.
+
+
+--------------------------------------------------------------------------------
+  4. ESTRATEGIA DURANTE A PROVA
+--------------------------------------------------------------------------------
+
+Nao gaste o mesmo tempo em todas as questoes. Comece pelo que voce domina e
+aumente a complexidade aos poucos.
+
+  ETAPA 1 - Garanta o basico
+    first_word, rev_print, rotone. Treine argv, write, loops e condicoes.
+
+  ETAPA 2 - Domine os padroes reutilizaveis
+    ft_atoi, inter, union e exercicios de bits. Entenda a ideia geral, nao
+    decore o codigo.
+
+  ETAPA 3 - Treine memoria e ponteiros
+    ft_split e listas ligadas. Aloque, verifique falhas, libere e evite
+    acessos invalidos.
+
+  ETAPA 4 - Simule condicoes reais
+    Sorteie exercicios, respeite o tempo, nao consulte solucoes e compile
+    com: cc -Wall -Wextra -Werror
+
+REGRAS PRATICAS
+  - Sabe resolver mas esta errando detalhes? Corrija e teste.
+  - Travou? Escreva o algoritmo em portugues/pseudocodigo antes de tentar
+    outra implementacao.
+  - Questao consumindo tempo demais? Avalie seguir para outra que voce
+    domina melhor.
+  - Antes de entregar: compile de novo e teste caso comum, entrada vazia,
+    limites e argumentos invalidos.
+  - Nao presuma que toda questao libera a proxima nem que todas valem o
+    mesmo. Isso depende das regras da versao do exame.
+
+
+--------------------------------------------------------------------------------
+  5. COMO TREINAR COM O SIMULADOR (examshell42sp)
+--------------------------------------------------------------------------------
+
+Para cada exercicio, faca tres rodadas:
+
+  RODADA 1 - Sozinho
+    Leia o enunciado e implemente sem consultar codigo pronto. Anote o
+    tempo e onde travou.
+
+  RODADA 2 - Corrigindo a logica
+    Identifique a causa do erro: interpretacao, loop, caso extremo ou
+    memoria. Refaca sem copiar a implementacao anterior.
+
+  RODADA 3 - Sob pressao
+    Volte outro dia e resolva com limite de tempo. So considere dominado
+    quando conseguir EXPLICAR a logica e REPRODUZIR a solucao sem ajuda.
+
+Meta: nao so reconhecer o nome da questao, mas escrever a solucao do zero,
+explicar por que funciona e corrigir os proprios erros.
+
+
+--------------------------------------------------------------------------------
+  6. PLANO DE ESTUDO DE 7 DIAS
+--------------------------------------------------------------------------------
+
+  DIA   FOCO
+  ----  ----------------------------------------------------------------
+   1    Strings, caracteres, write, argumentos
+   2    ft_atoi, conversoes e condicoes
+   3    inter, union e exercicios de busca
+   4    Operadores bitwise e exercicios matematicos
+   5    malloc, free e ft_split
+   6    Listas ligadas; introducao a GNL e ft_printf
+   7    Simulado completo, revisao dos erros, repetir as questoes dificeis
+
+Se ainda nao domina strings, dedique 2 ou 3 dias a elas antes de ir para
+memoria dinamica. Avance conforme seu desempenho, nao so pelo calendario.
+
+
+--------------------------------------------------------------------------------
+  7. ESQUELETOS DE REFERENCIA
+--------------------------------------------------------------------------------
+Use para entender a logica. Na prova, reescreva sem olhar.
+
+--- rot_13 (logica por caractere) ---
+
+    if (c >= 'a' && c <= 'z')
+        c = (c - 'a' + 13) % 26 + 'a';
+    else if (c >= 'A' && c <= 'Z')
+        c = (c - 'A' + 13) % 26 + 'A';
+    write(1, &c, 1);
+
+--- ft_atoi ---
+
+    int ft_atoi(const char *s)
+    {
+        int i = 0;
+        int sign = 1;
+        int n = 0;
+
+        while (s[i] == ' ' || (s[i] >= 9 && s[i] <= 13))
+            i++;
+        if (s[i] == '-' || s[i] == '+')
+        {
+            if (s[i] == '-')
+                sign = -1;
+            i++;
+        }
+        while (s[i] >= '0' && s[i] <= '9')
+        {
+            n = n * 10 + (s[i] - '0');
+            i++;
+        }
+        return (n * sign);
+    }
+
+--- swap_bits ---
+
+    unsigned char swap_bits(unsigned char octet)
+    {
+        return ((octet >> 4) | (octet << 4));
+    }
+
+--- is_power_of_2 (ideia) ---
+
+    Uma potencia de 2 tem exatamente UM bit ligado.
+    Para n > 0:  (n & (n - 1)) == 0
+    Confira no subject como o 0 deve ser tratado.
+
+--- inter (ideia com seen[256]) ---
+
+    unsigned char seen[256] = {0};
+
+    para cada char c de s1:
+        se c nao foi visto E c existe em s2:
+            write(c); seen[c] = 1;
+
+    Para union: percorra s1 e depois s2, imprimindo cada char ainda nao
+    visto e marcando como visto.
+
+--- ft_split (ideia) ---
+
+    1. Conte as palavras.
+    2. Aloque o array de ponteiros (palavras + 1, ultimo = NULL).
+    3. Para cada palavra: ache o inicio e o fim, aloque, copie.
+    4. Se QUALQUER malloc falhar: libere tudo o que ja alocou e retorne NULL.
+
+
+--------------------------------------------------------------------------------
+  8. CHECKLIST TECNICO (antes de dar o exercicio como pronto)
+--------------------------------------------------------------------------------
+
+  [ ] A funcao respeita exatamente o enunciado.
+  [ ] Compila com -Wall -Wextra -Werror.
+  [ ] Indices e ponteiros nao ultrapassam os limites validos.
+  [ ] As condicoes de parada estao corretas.
+  [ ] Entradas vazias e casos extremos foram considerados.
+  [ ] Todo malloc e verificado; a memoria que a funcao possui e liberada.
+  [ ] Sem comportamento indefinido, leitura invalida ou uso apos free.
+  [ ] Nome dos arquivos e prototipo conforme as regras do exercicio.
+
+Detalhe: nem toda questao exige malloc, listas ou Makefile. Siga os
+requisitos especificos do exercicio.
+
+
+--------------------------------------------------------------------------------
+  9. ERROS CLASSICOS
+--------------------------------------------------------------------------------
+
+  - Esquecer o '\n' final quando o subject pede (ou imprimir quando nao pede).
+  - Nao tratar numero de argumentos errado (argc) - normalmente imprime
+    so '\n' ou nada, conforme o subject.
+  - Usar char com sinal em indice de array (use unsigned char).
+  - Off-by-one no malloc (esquecer o +1 do '\0').
+  - Nao retornar NULL / nao liberar tudo quando um malloc falha.
+  - Usar funcoes proibidas (printf, strlen, etc.) quando so write e permitido.
+  - Deixar o arquivo em pasta/nome errado no rendu.
+
+
+================================================================================
+  Dica final: entender > decorar. Se voce consegue explicar a logica em voz
+  alta e reescrever do zero, voce esta pronta para a prova.
+================================================================================
