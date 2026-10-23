@@ -29,7 +29,7 @@
 
 O **patibum-exam** é o meu repositório pessoal de estudos e preparação para os exames da 42.
 
-Aqui guardo exercícios, soluções e anotações da minha jornada em **C**, com o objetivo de praticar lógica de programação, revisar conceitos importantes e ganhar confiança para as provas.
+Aqui guardo exercícios, soluções e anotações da minha jornada em **C & Python**, com o objetivo de praticar lógica de programação, revisar conceitos importantes e ganhar confiança para as provas.
 
 > Um cantinho para errar, aprender, testar de novo e evoluir um pouquinho a cada dia. 🦢
 
@@ -37,7 +37,7 @@ Aqui guardo exercícios, soluções e anotações da minha jornada em **C**, com
 
 ## 🩰 objetivos
 
-- 📚 Revisar os conceitos essenciais de C
+- 📚 Revisar os conceitos essenciais de C & Python
 - 💻 Praticar os exercícios no formato do exame
 - 🧠 Desenvolver raciocínio lógico e resolução de problemas
 - ⏱️ Treinar gestão de tempo sob pressão
