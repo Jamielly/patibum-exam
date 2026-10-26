@@ -4,11 +4,10 @@ typedef struct    s_list
     void          *data;
 }                 t_list;
 
-
-int	ft_list_size(t_list *begin_list)
+int ft_list_size(t_list *begin_list)
 {
-    int count = 0;
-    while (begin_list != 0)
+    int count =  0;
+    while (begin_list)
     {
         count++;
         begin_list = begin_list->next;
