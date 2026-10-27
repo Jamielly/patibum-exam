@@ -1,38 +1,55 @@
 #include <unistd.h>
-
-void putnbr(int n)
+void putnbr(int n) //--> para imprimir o numero
 {
-    if (n >= 10)
-        putnbr(n / 10);
-    char c = (n % 10) + '0';
-    write(1, &c, 1);
+    if (n > 9)
+        putnbr (n / 10);
+    write (1,&"0123456789"[n % 10],1);
 }
 
-int is_prime(int n)
+int atoi(char *str) //-->para numeros positivos
+{
+    int res = 0;
+    int i = 0;
+
+    while (str[i] >= '0' && str[i] <= '9')
+    {
+        res = res * 10 + (str[i] - '0');
+        i++;
+    }
+    return (res);
+}
+
+int is_prime(int n) //--> validar para numero primo
 {
     int i = 2;
-    while (i * i <= n && n % i != 0)
+    if (n <= 1)
+        return (0);
+    
+    while (i * i <= n)
+    {
+        if (n % i == 0)
+            return (0);
         i++;
-    return (n >= 2 && i * i > n);
+    }
+    return (1); //--> ok, é primo
 }
-
-int main(int ac, char **av)
+int main(int ac, char **av) //--> programa principal simplificado
 {
-    int n = 0;
+    int n;
     int sum = 0;
-
     if (ac == 2)
     {
-        while (*av[1] >= '0' && *av[1] <= '9')
-            n = n * 10 + (*av[1]++ - '0');
-        while (n >= 2)
+        n = atoi(av[1]);
+
+        while (n > 1)
         {
-            if (is_prime(n))
-                sum += n;
-            n--;
+        if (is_prime(n))
+            sum += n;
+        n--;
         }
-    }
     putnbr(sum);
-    write(1, "\n", 1);
-    return (0);
+    }
+    else
+        write(1,"0",1);
+    write(1,"\n",1);
 }
