@@ -36,5 +36,6 @@ int main(int ac, char **av)
             i++;
         }
     }
-    write (1,"\n",1);
+    else
+        write (1,"\n",1);
 }
