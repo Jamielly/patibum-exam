@@ -1,0 +1,182 @@
+Árvore de Habilidades do Exam Rank 02: Mapa Gameficado de Padrões e Progressão
+
+O Exam Rank 02 da 42 School é estruturado não como uma coleção aleatória de 57 exercícios independentes, mas como uma árvore de habilidades progressiva e altamente conectada. Cada nível constrói fundações diretas para o nível seguinte. Quando um estudante percebe que os exercícios de níveis avançados utilizam exatamente os mesmos blocos de construção algorítmicos dos níveis iniciais, a complexidade aparente da prova se dissolve.
+
+Este documento mapeia sistematicamente as invariantes, os padrões transversais, a progressão por fases e as interligações diretas entre os exercícios do Rank 02, oferecendo um roteiro claro para dominar a prova com máxima eficiência cognitiva.
+
+1. As Regras do Jogo e o Contrato Invariante (O Core do Engine)
+
+Para vencer qualquer jogo, é preciso entender primeiro as regras da sua "engine" de avaliação. No Exam Rank 02, o ambiente de teste é governado pelo Grading Shell, um avaliador automático determinístico que não julga elegância, estilo ou norma, mas sim a fidelidade estrita entre a saída gerada pelo seu código e o binário de referência.
+
+A Regra de Ouro: "Write a program" e a Isenção da Norminette
+
+Diferente dos projetos regulares do Common Core da 42, os exames de Rank possuem especificidades estratégicas cruciais documentadas nos guias de arquitetura cognitiva da escola:
+
+* Ausência de Norminette: Durante o exame, não há checagem de limites de 25 linhas por função, máximo de 4 variáveis por escopo, proibição do laço for ou alinhamento rígido de tabulações.
+* Simplificação na main: Quando o enunciado de um exercício começa com a instrução "write a program", toda a lógica do código deve ser escrita diretamente dentro da função main. Não há necessidade de criar funções auxiliares separadas ou arquivos de cabeçalho extras, reduzindo drasticamente o risco de erros de escopo e chamadas indevidas.
+* O Juiz Único (diff): O Grading Shell compila o código com as sinalizações estritas de compilação -Wall -Wextra -Werror e executa baterias de testes automatizados. O único critério de aprovação é o diff zero contra a saída esperada.
+
+O Contrato Invariante de Entrada e Saída
+
+Independente do nível da questão, existe um padrão de tratamento de argumentos que se repete em quase todos os programas executáveis da prova:
+
+1. Validação de Argumentos (argc): Se o programa exige 1 argumento na linha de comando, a checagem if (argc != 2) deve ser executada no topo da main. Se a condição falhar (nenhum argumento ou múltiplos argumentos), o programa deve imprimir apenas uma quebra de linha \n e encerrar imediatamente com return (0);.
+2. A Quebra de Linha Obrigatória (\n): Praticamente todos os exercícios exigem que a saída termine com um \n. Mesmo quando nenhum argumento válido é fornecido, a quebra de linha deve ser emitida antes do encerramento.
+3. Zero Tolerância a Erros de Memória: O acesso a ponteiros nulos ou fora dos limites do array resulta em Segmentation Fault ou Bus Error. Laços sem incremento correto geram Timeout (falha por tempo limite). Ambas as situações resultam em reprovação instantânea com Grading Failure.
+
+2. As Habilidades Transversais (O Core Skill Set)
+
+Por trás das dezenas de enunciados do Rank 02, existem apenas cinco habilidades algorítmicas fundamentais. Dominar essas cinco habilidades significa garantir a aprovação em qualquer combinação de questões sorteada pelo sistema.
+
+Habilidade 1: Navegação de Ponteiros e Pulo de Delimitadores
+
+Esta habilidade consiste em percorrer buffers de texto utilizando ponteiros ou índices, identificando e ignorando espaços em branco (' ') e tabulações ('\t').
+
+Padrão Reutilizável:
+
+while (str[i] == ' ' || str[i] == '\t')
+    i++;
+
+
+Essa técnica é a espinha dorsal de exercícios como first_word (Nível 1), epur_str e expand_str (Nível 3), e evolui sem alterações conceituais para last_word (Nível 2/4), rostring (Nível 4), rev_wstr (Nível 4) e ft_split (Nível 4).
+
+Habilidade 2: Tabela de Frequência e Lookup ASCII seen[256]
+
+Em vez de utilizar laços aninhados de complexidade quadrática O(N^2) para checar se um caractere já foi processado ou impresso, a técnica mais eficiente e segura é alocar uma tabela de acesso direto de 256 posições zerada na pilha da função.
+
+Padrão Reutilizável:
+
+unsigned char seen[256] = {0};
+
+if (!seen[(unsigned char)str[i]])
+{
+    write(1, &str[i], 1);
+    seen[(unsigned char)str[i]] = 1;
+}
+
+
+O uso do cast explícito (unsigned char) é essencial para evitar índices negativos ao manipular caracteres estendidos da tabela ASCII. Esse padrão resolve com complexidade linear O(N) os exercícios inter e union (Nível 2), além de servir para detecção de duplicatas e anagramas.
+
+Habilidade 3: Aritmética de Sinais e Prevenção de Overflow
+
+A conversão entre texto e números inteiros exige controle estrito da tabela ASCII e tratamento defensivo dos limites físicos dos tipos numéricos em C.
+
+Padrão Reutilizável: A conversão de um caractere numérico em valor inteiro é feita pela subtração do caractere base: digit = str[i] - '0';. A conversão inversa é feita pela soma: c = (nb % 10) + '0';.
+
+Para evitar o estouro de memória (overflow) ao processar o menor inteiro possível em C (INT_MIN = -2147483648), a estratégia defensiva consiste em converter o parâmetro int recebido para um tipo de maior capacidade, como long, antes de inverter o sinal ou realizar divisões sucessivas. Esse padrão é compartilhado por ft_atoi (Nível 2), ft_atoi_base (Nível 3), print_hex (Nível 3), ft_itoa (Nível 4) e fprime (Nível 4).
+
+Habilidade 4: Gestão Defensiva do Heap e Cálculo Universal de Tamanho
+
+Exercícios que alocam memória dinâmica com malloc exigem o cálculo exato do tamanho necessário e a validação do ponteiro retornado. Ao lidar com intervalos numéricos (como em ft_range e ft_rrange), o cálculo da quantidade de elementos precisa ser universal para lidar com limites positivos e negativos.
+
+Fórmula Universal de Tamanho:
+
+len = (start <= end) ? (end - start + 1) : (start - end + 1);
+
+
+Essa fórmula garante um valor de alocação estritamente positivo, independentemente de o intervalo ser crescente (ex: 0 até 3) ou decrescente (ex: 0 até -3).
+
+Habilidade 5: Manipulação de Dados em Listas Encadeadas e Callbacks
+
+Exercícios do Nível 4 que utilizam a estrutura de lista encadeada t_list exigem a iteração por ponteiros next.
+
+Padrão de Segurança em Listas: Em exercícios de ordenação de listas como sort_list, a estratégia mais simples e imune a erros de ponteiros é manter a estrutura física dos nós intacta e trocar apenas os dados internos (data) entre os nós adjacentes.
+
+3. O Mapa da Árvore de Habilidades: Da Fase 1 ao Chefe Final
+
+A progressão do Exam Rank 02 pode ser visualizada como um jogo de RPG dividido em 4 fases distintas. Cada fase exige o domínio de habilidades específicas para desbloquear o nível seguinte.
+
+Fase / Nível	Foco Primário	Conceitos Dominados	Desafios Representativos
+Fase 1 (Nível 1)	Tutorial & I/O Elementar	Controle de argc, laço while(*str), tabela ASCII básica, escrita com write.	first_word, rev_print, rot_13, fizzbuzz, ulstr.
+Fase 2 (Nível 2)	Memória Local & Bitwise	Lookup table seen[256], manipulação de bits (&, |, ^, <<, >>), parsing ft_atoi.	inter, union, ft_atoi, ft_strcmp, swap_bits, wdmatch.
+Fase 3 (Nível 3)	Algoritmos & Heap	Normalização de espaços, alocação com malloc, conversão de bases, matemática de primos.	epur_str, expand_str, ft_range, ft_rrange, hidenp, add_prime_sum.
+Fase 4 (Nível 4)	Chefões & Structs	Matrizes de strings (ft_split), recursão/grafos (flood_fill), listas encadeadas (t_list).	ft_split, ft_itoa, rostring, rev_wstr, sort_list, ft_list_foreach.
+
+Fase 1 (Nível 1) — O Tutorial
+
+Nesta fase, o objetivo é garantir que o estudante domina a mecânica básica do ambiente de teste. Os programas leem argumentos de entrada, percorrem strings caractere por caractere e emitem a saída formatada.
+
+* Conceito Chave: Checar if (argc == 2), percorrer a string até o '\0' e garantir a quebra de linha write(1, "\n", 1); no final.
+
+Fase 2 (Nível 2) — Iniciação em Memória e Operadores Bitwise
+
+A complexidade aumenta com a introdução de filtragem de caracteres sem repetição, comparação de strings e manipulação direta de bits nos registradores.
+
+* Conceito Chave: Introdução do array unsigned char seen[256] = {0}; para resolver problemas de união e interseção em tempo linear O(N), eliminando laços aninhados.
+
+Fase 3 (Nível 3) — Parsing Avançado, Matemática e Alocação
+
+Os exercícios passam a exigir manipulação dinâmica de memória no Heap, formatação complexa de texto e matemática discreta (decomposição de fatores e primos).
+
+* Conceito Chave: Cálculo rigoroso de tamanho para malloc e algoritmo de salto de espaços com controle de impressão de delimitadores.
+
+Fase 4 (Nível 4) — Os Chefões de Fase
+
+A fase final testa a capacidade do estudante de integrar todos os conceitos aprendidos anteriormente em estruturas de dados complexas.
+
+* Conceito Chave: Gerenciamento de ponteiros duplos (char **), alocação em matrizes com limpeza defensiva de memória em caso de falha, e manipulação de listas encadeadas.
+
+4. Matriz de Interligações: As Pontes de Reuso Algorítmico
+
+A maior descoberta ao analisar o Rank 02 é que os exercícios não são isolados; eles formam Cadeias de Evolução. Entender a ponte entre dois exercícios permite resolver uma questão do Nível 4 reaproveitando a lógica de uma questão do Nível 1 ou Nível 2.
+
+[CADEIA 1: PARSING DE PALAVRAS]
+first_word (N1) ──► epur_str (N3) ──► rostring / rev_wstr (N4) ──► ft_split (N4)
+
+[CADEIA 2: CONVERSÃO NUMÉRICA]
+ft_atoi (N2) ──► ft_atoi_base (N3) / print_hex (N3) ──► ft_itoa (N4)
+
+[CADEIA 3: ALOCAÇÃO NO HEAP]
+ft_strdup (N2) ──► ft_range / ft_rrange (N3) ──► ft_split (N4)
+
+[CADEIA 4: BUSCA E FILTRAGEM]
+wdmatch (N2) ──► hidenp (N3)
+inter / union (N2) ──► filtro por tabela hash O(1)
+
+
+Análise Detalhada das 4 Grandes Cadeias de Evolução
+
+Cadeia 1: A Trilha de Parsing de Palavras
+
+* Ponto de Partida (first_word - N1): Pula espaços iniciais, identifica o início da primeira palavra e imprime até encontrar o próximo espaço ou '\0'.
+* Evolução 1 (epur_str / expand_str - N3): Aplica o pulo de espaços ao longo de toda a string. Imprime cada palavra e adiciona exatamente um espaço entre elas, ignorando espaços sobressalentes no início e no fim.
+* Evolução 2 (rostring / rev_wstr - N4): Em vez de imprimir imediatamente, guarda os índices de início (start) e fim (end) das palavras. No rostring, a primeira palavra é guardada e impressa por último. No rev_wstr, a string é percorrida de trás para frente, imprimindo as palavras na ordem inversa sem alocar memória extra.
+* Evolução Final (ft_split - N4): Utiliza exatamente a mesma lógica de contagem e isolamento de palavras (start e end), mas em vez de imprimir com write, aloca uma matriz de ponteiros char ** no Heap e copia cada palavra isolada.
+
+Cadeia 2: A Trilha de Conversão Numérica
+
+* Ponto de Partida (ft_atoi - N2): Pula espaços em branco, processa o sinal ('+' ou '-') e acumula dígitos numéricos em um número inteiro: result = result * 10 + (str[i] - '0');.
+* Evolução 1 (ft_atoi_base / print_hex - N3): Substitui a base decimal (10) por uma base arbitrária (2 a 16). Em print_hex, realiza divisões e restos sucessivos por 16, mapeando os valores de 10 a 15 nos caracteres 'a' a 'f'.
+* Evolução Final (ft_itoa - N4): Realiza o caminho inverso do ft_atoi. Recebe um int, calcula a quantidade de dígitos necessária, aloca a string no Heap e preenche os caracteres do final para o início utilizando nb % 10 + '0'. Utiliza long para evitar estouro no valor INT_MIN.
+
+Cadeia 3: A Trilha de Gestão no Heap
+
+* Ponto de Partida (ft_strdup - N2): Calcula o tamanho da string com ft_strlen, aloca malloc(sizeof(char) * (len + 1)) e copia os caracteres finalizando com '\0'.
+* Evolução 1 (ft_range / ft_rrange - N3): Aplica a alocação dinâmica para vetores de inteiros int *. Utiliza a fórmula universal de tamanho len e preenche o vetor em ordem crescente (ft_range) ou decrescente do fim para o início (ft_rrange).
+* Evolução Final (ft_split - N4): Combina alocação múltipla no Heap. Aloca primeiro o vetor de ponteiros char ** e depois executa um malloc individual para cada palavra. Exige um laço defensivo que libere todas as palavras anteriores (free) caso qualquer alocação intermediária retorne NULL.
+
+Cadeia 4: A Trilha de Busca e Subsequência
+
+* Ponto de Partida (wdmatch - N2): Verifica se todos os caracteres da primeira string aparecem dentro da segunda string, mantendo a ordem original. Percorre a segunda string e avança o índice da primeira apenas quando encontra uma correspondência. Se o índice da primeira string alcançar o '\0', a palavra inteira foi encontrada e é impressa.
+* Evolução Direta (hidenp - N3): O algoritmo de busca de subsequência é 100% idêntico ao wdmatch. A única alteração é a saída: se a primeira string estiver escondida na segunda, imprime "1"; caso contrário, imprime "0".
+
+5. Protocolo Neurocognitivo e Checklist Anti-Crash para a Prova
+
+Estudos de ciência cognitiva e neurociência aplicados ao aprendizado de programação destacam que o cérebro humano possui uma memória de trabalho limitada (capaz de reter apenas cerca de 4 a 7 elementos simultâneos). Sob o estresse e a pressão de tempo do exame, a sobrecarga cognitiva pode fazer com que o estudante cometa erros triviais de sintaxe ou lógica.
+
+A Estratégia dos Modos Focado e Difuso
+
+* Modo Focado (Execução): Ao abrir um exercício, identifique imediatamente a qual Cadeia de Evolução ele pertence. Escreva a estrutura base da main, a validação de argc e o loop principal.
+* Modo Difuso (Pausa Tática): Se o código falhar no Grading Shell com Grading Failure ou Timeout, não permaneça olhando fixamente para a tela em pânico. Afaste os olhos do monitor por 1 a 2 minutos. Essa pequena pausa desativa a sobrecarga da memória de trabalho e permite que o cérebro identifique instantaneamente erros silenciosos, como um incremento i++ esquecido dentro do laço ou uma falta de \n na saída de erro.
+
+Checklist Anti-Crash Pré-Push (Validação em 30 Segundos)
+
+Antes de enviar a solução para a Moulinette no examshell, passe o código pelo seguinte checklist mental:
+
+1. Validação de argc: O programa verifica exatamente o número de argumentos exigido pelo subject? Se a entrada for inválida ou vazia, ele imprime \n e encerra?
+2. Garantia de Término de Laço: Todas as ramificações dentro do laço while possuem incremento do ponteiro ou índice (i++ ou str++)?
+3. Proteção contra Acesso Nulo: A leitura de arrays ou ponteiros verifica a presença do caractere nulo '\0' antes de acessar posições futuras (str[i] e str[i + 1])?
+4. Tratamento de Limites e Sinais: Funções numéricas tratam corretamente o número zero 0 e o valor limite INT_MIN (-2147483648)?
+5. Quebra de Linha Final: A saída impressa via write sempre encerra com o caractere \n?
+
+Dominando o mapa de interligações e aplicando este protocolo de validação, a aprovação no Exam Rank 02 deixa de ser uma questão de sorte no sorteio de questões e se torna um resultado determinístico de preparação estruturada.
