@@ -33,7 +33,7 @@ int is_prime(int n) //--> validar para numero primo
     }
     return (1); //--> ok, é primo
 }
-int main(int ac, char **av) //--> programa principal simplificado
+int main(int ac, char **av) //--> programa principal simplificado, semelhante a fprime do N4
 {
     int n;
     int sum = 0;
