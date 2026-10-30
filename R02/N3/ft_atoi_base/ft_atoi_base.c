@@ -1,42 +1,48 @@
-int to_value(char c)
-{
-    if (c >= '0' && c <= '9')
-        return (c - '0');
-    if (c >= 'A' && c <= 'F')
-        c += 32;
-    if (c >= 'a' && c <= 'f')
-        return (c - 'a' + 10);
-    return (-1);
-}
+static int to_value(char c) 
+{ 
+    if (c >= '0' && c <= '9') 
+        return (c - '0'); 
+    if (c >= 'A' && c <= 'F') 
+        c += 32; // Converte 'A'-'F' para 'a'-'f' 
+    if (c >= 'a' && c <= 'f') 
+        return (c - 'a' + 10); 
+    return (-1); 
+} 
 
-int ft_atoi_base(const char *str, int str_base)
-{
-    int res = 0;
-    int sign = 1;
-    int val;
+int ft_atoi_base(const char *nbr, int base) // No exame, a base costuma ser passada como 'int'
+{ 
+    int res = 0; 
+    int sign = 1; 
+    int val; 
 
-    if (!str || str_base < 2 || str_base > 16)
-        return (0);
+    // A base não pode ser vazia, e deve estar entre 2 e 16
+    // Note que se o ponteiro nbr for nulo na prova, o comportamento oficial é dar segfault (não precisa proteger !nbr)
+    // Mas se quiser proteger, não há problema, porém focar nos limites da base é crucial.
+    if (base < 2 || base > 16) 
+        return (0); 
 
-    // 1. Trata o sinal apenas se for o primeiríssimo caractere
-    if (*str == '-')
-    {
-        sign = -1;
-        str++;
-    }
+    // 1. Pula espaços em branco
+    while (*nbr == ' ' || (*nbr >= 9 && *nbr <= 13)) 
+        nbr++; 
 
-    // 2. Itera caractere por caractere
-    while (*str)
-    {
-        val = to_value(*str);
+    // 2. Trata múltiplos sinais (+ e -)
+    while (*nbr == '-' || *nbr == '+') 
+    { 
+        if (*nbr == '-') 
+            sign = -sign; // Inverte o sinal toda vez que acha um '-'
+        nbr++; 
+    } 
 
-        // Se não for dígito hexadecimal ou for maior/igual à base, para
-        if (val == -1 || val >= str_base)
-            break;
-
-        // 3. Aplica o deslocamento da base e soma o novo dígito
-        res = res * str_base + val;
-        str++;
-    }
-    return (res * sign);
+    // 3. Converte a base
+    while (*nbr) 
+    { 
+        val = to_value(*nbr); 
+        // Se a letra não for hex, ou o valor for maior que a base (ex: '9' na base 8)
+        if (val == -1 || val >= base) 
+            break; 
+        
+        res = res * base + val; 
+        nbr++; 
+    } 
+    return (res * sign); 
 }
