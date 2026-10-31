@@ -60,3 +60,49 @@ int main(int ac, char **av)
     write(1, "\n", 1);
     return(0);
 }
+
+==============OU SIMPLIFICADO======================================================
+
+#include <unistd.h>
+
+int main(int ac, char **av)
+{
+    int i = 0;
+    int start;
+    int end;
+
+    if (ac > 1)
+    {
+        // 1. Pula espaços iniciais e salva as coordenadas da primeira palavra
+        while (av[1][i] == ' ' || av[1][i] == '\t')
+            i++;
+        
+        start = i;
+        while (av[1][i] && av[1][i] != ' ' && av[1][i] != '\t')
+            i++;
+        end = i;
+
+        // 2. Procura as próximas palavras. Ao achar, imprime a palavra e 1 espaço.
+        while (av[1][i])
+        {
+            while (av[1][i] == ' ' || av[1][i] == '\t')
+                i++;
+            
+            if (av[1][i]) // Se não chegou no final, achou uma nova palavra
+            {
+                while (av[1][i] && av[1][i] != ' ' && av[1][i] != '\t')
+                {
+                    write(1, &av[1][i], 1);
+                    i++;
+                }
+                write(1, " ", 1); // Adiciona um espaço fixo após cada palavra extra
+            }
+        }
+
+        // 3. Imprime a primeira palavra por último (se houver alguma)
+        if (start < end)
+            write(1, &av[1][start], end - start);
+    }
+    write(1, "\n", 1);
+    return (0);
+}
