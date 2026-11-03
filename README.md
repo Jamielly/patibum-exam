@@ -95,7 +95,7 @@ norminette nome_do_arquivo.c
 
 ## 🌱 progresso
 
-- [ ] 🩷 Rank 02
+- [x] 🩷 Rank 02
 - [ ] 🩵 Rank 03
 - [ ] 💜 Rank 04
 - [ ] 🤍 Rank 05

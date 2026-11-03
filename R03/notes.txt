@@ -1,0 +1,6 @@
+* **Nível 1:** `py_bracket_validator`, `py_cryptic_sorter`[4]
+* **Nível 2:** `py_echo_validator`, `py_mirror_matrix`[5]
+* **Nível 3:** `py_hidenp`, `py_inter`, `py_number_base_converter`, `py_pattern_tracker`[5]
+* **Nível 4:** `py_anagram`, `py_shadow_merge`, `py_string_permutation_checker`[6]
+* **Nível 5:** `py_string_sculptor`, `py_twist_sequence`[6]
+* **Nível 6:** `py_whisper_cipher`[7]
